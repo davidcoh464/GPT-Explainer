@@ -3,7 +3,7 @@ from pptx import Presentation
 
 class PresentationParser:
     @staticmethod
-    def extract_text(path_to_presentation):
+    def extract_text(path_to_presentation: str) -> list[str]:
         """
         Extracts the text from each shape in each slide of a PowerPoint presentation.
 
