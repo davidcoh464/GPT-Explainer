@@ -41,7 +41,7 @@ def get_user_path() -> str:
         return file_path
 
 
-async def main():
+def main():
     """
     Main function to process the PowerPoint presentation.
 
@@ -51,9 +51,11 @@ async def main():
     configure()
     user_path = get_user_path()
     slides = PresentationParser.extract_text(user_path)
-    responses = await SlideHandler.response_handler(slides)
+    loop = asyncio.get_event_loop()
+    responses = loop.run_until_complete(SlideHandler.response_handler(slides))
     output_file = OutputManage.save_to_json(responses, user_path)
     print(f"Saving the output file in {output_file}")
 
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

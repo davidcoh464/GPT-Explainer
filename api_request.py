@@ -28,14 +28,16 @@ class ApiRequest:
         # Generate text from prompt asynchronously
         async with aiohttp.ClientSession() as session:
             response = await session.post(
-                f"https://api.openai.com/v1/engines/{engine}/completions",
+                "https://api.openai.com/v1/chat/completions",  # Updated endpoint URL
                 headers={
                     "Authorization": f"Bearer {openai.api_key}",
                     "Content-Type": "application/json"
                 },
                 json={
-                    "prompt": prompt,
-                    "max_tokens": max_tokens
+                    "messages": [{"role": "system", "content": "You are a helpful assistant."},
+                                 {"role": "user", "content": prompt}],
+                    "max_tokens": max_tokens,
+                    "model": "gpt-3.5-turbo"  # Add the model parameter
                 }
             )
             return await response.json()
