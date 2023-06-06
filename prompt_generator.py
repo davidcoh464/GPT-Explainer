@@ -30,7 +30,7 @@ class PromptGenerator:
             str: The generated prompt.
 
         """
-        prompt = f"Can you rewrite the following slide in a better way?\n"
+        prompt = f"Rewrite the following slide in a better way:\n"
         prompt += f"Slide number: {self.slide_index}\n"
         prompt += f"{self.slide_content}"
 
