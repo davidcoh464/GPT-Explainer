@@ -27,6 +27,12 @@ class OutputManage:
 
         """
         output_file = os.path.splitext(user_path)[0] + ".json"
+        content_list = [response["choices"][0]["message"]["content"] for response in responses]
+        slide_list = []
+        for i, content in enumerate(content_list, start=1):
+            slide = {"slide_number": i, "content": content}
+            slide_list.append(slide)
+
         with open(output_file, 'w') as f:
-            json.dump(responses, f)
+            json.dump(slide_list, f, indent=4)
         return output_file
