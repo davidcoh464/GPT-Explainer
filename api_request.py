@@ -23,7 +23,7 @@ class ApiRequest:
 
         # Set engine and parameters
         engine = "gpt-3.5-turbo"
-        max_tokens = 128
+        max_tokens = 512
 
         # Generate text from prompt asynchronously
         async with aiohttp.ClientSession() as session:
@@ -37,7 +37,7 @@ class ApiRequest:
                     "messages": [{"role": "system", "content": "You are a helpful assistant."},
                                  {"role": "user", "content": prompt}],
                     "max_tokens": max_tokens,
-                    "model": "gpt-3.5-turbo"  # Add the model parameter
+                    "model": engine  # Add the model parameter
                 }
             )
             return await response.json()
