@@ -34,5 +34,5 @@ class OutputManage:
             slide_list.append(slide)
 
         with open(output_file, 'w') as f:
-            json.dump(responses, f, indent=4)
+            json.dump(slide_list, f, indent=4)
         return output_file
