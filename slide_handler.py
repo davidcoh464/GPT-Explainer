@@ -49,9 +49,4 @@ class SlideHandler:
 
         # Wait for all tasks to complete
         responses = await asyncio.gather(*tasks)
-
-        # Process the responses
-        result = []
-        for response in responses:
-            result.append(response)
-        return result
+        return responses
