@@ -24,14 +24,12 @@ class OutputManage:
 
         Returns:
             str: The path of the saved JSON file.
-
         """
         output_file = os.path.splitext(user_path)[0] + ".json"
+        # Extract the content from the API responses
         content_list = [response["choices"][0]["message"]["content"] for response in responses]
-        slide_list = []
-        for i, content in enumerate(content_list, start=1):
-            slide = {"slide_number": i, "content": content}
-            slide_list.append(slide)
+        # Change to a more orderly form of slide number, content
+        slide_list = [{"slide_number": i, "content": content} for i, content in enumerate(content_list, start=1)]
 
         with open(output_file, 'w') as f:
             json.dump(slide_list, f, indent=4)
