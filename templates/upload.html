@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Upload new File{% endblock %}
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".pptx">
+    <input type="submit" value="Upload">
+</form>
+{% endblock %}
