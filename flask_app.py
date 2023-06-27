@@ -233,7 +233,7 @@ def status(uid):
                 output = load_output(filename)
                 status_info = save_to_json("done", file_info['name'], file_info['timestamp'], output)
             else:
-                status_info = save_to_json("padding", file_info['name'], file_info['timestamp'])
+                status_info = save_to_json("pending", file_info['name'], file_info['timestamp'])
             return Response(json.dumps(status_info),  mimetype='application/json')
     return jsonify({'status': 'not found'}), 404
 
