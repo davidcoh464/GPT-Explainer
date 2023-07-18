@@ -2,8 +2,14 @@
 {% block title %}Upload new File{% endblock %}
 
 {% block content %}
-<form method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept=".pptx">
-    <input type="submit" value="Upload">
-</form>
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{message}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".pptx">
+        <input type="submit" value="Upload">
+    </form>
 {% endblock %}
