@@ -1,4 +1,4 @@
-from flask import Flask, Response, request, jsonify, render_template, redirect, flash
+from flask import Flask, Response, request, jsonify, render_template, redirect, flash, url_for
 from dotenv import load_dotenv
 from flask_util import set_path, save_upload, save_to_json, UPLOADS_FOLDER
 from flask_util import load_output, get_file_info, is_file_processed
@@ -87,6 +87,29 @@ def status(uid):
     return jsonify({'status': 'not found'}), 404
 
 
+@app.route('/search', methods=['POST', 'GET'])
+def search():
+    """
+    Handles the search functionality. Accepts both POST and GET requests.
+    If a POST request is received with a non-empty UID, it redirects to the
+    'status' route with the UID as a parameter.
+    If a POST request is received with an empty UID, it flashes a message
+    indicating that the UID should be entered and redirects back to the search page.
+    If a GET request is received, it renders the 'search.html' template.
+
+    Returns:
+        str: The rendered HTML page or a redirect response.
+    """
+    if request.method == 'POST':
+        uid = request.form['uid']
+        if uid:
+            return redirect(url_for('status', uid=uid))
+        else:
+            flash("Enter the UID")
+            return redirect(request.url)
+    return render_template("search.html")
+
+
 def main():
     """
     The entry point of the application.
@@ -95,11 +118,11 @@ def main():
     Finally, it raises the stop event to terminate the explainer system thread.
     """
     setup_app()
-    event = threading.Event()
-    t1 = threading.Thread(target=explainer_system, args=(event,))
+    stop_event = threading.Event()
+    t1 = threading.Thread(target=explainer_system, args=(stop_event,))
     t1.start()
     app.run()
-    event.set()
+    stop_event.set()
     t1.join()
 
 

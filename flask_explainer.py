@@ -53,8 +53,7 @@ def explainer_system(stop_event: threading.Event):
     """
 
     while not stop_event.is_set():
-        filenames = [filename for filename in os.listdir(UPLOADS_FOLDER)
-                     if not is_file_processed(filename)]
+        filenames = [filename for filename in os.listdir(UPLOADS_FOLDER) if not is_file_processed(filename)]
         for filename in filenames:
             if not stop_event.is_set():
                 try:
