@@ -5,7 +5,6 @@ from datetime import datetime
 import os
 import json
 
-
 UPLOADS_FOLDER = "uploads"
 OUTPUTS_FOLDER = "outputs"
 
@@ -18,25 +17,6 @@ def generate_uid() -> str:
         str: The generated unique identifier.
     """
     return str(uuid4())
-
-
-def save_upload(file) -> str:
-    """
-    Saves the uploaded file to the uploads folder with a unique filename,
-    based on the original filename, timestamp, and UID.
-
-    Args:
-        file: The file object to be saved.
-
-    Returns:
-        str: The generated UID associated with the saved file.
-    """
-    uid = generate_uid()
-    name, file_type = os.path.splitext(file.filename)
-    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-    filename = f"{name}_{timestamp}_{uid}{file_type}"
-    file.save(os.path.join(UPLOADS_FOLDER, filename))
-    return uid
 
 
 def get_file_info(filename: str) -> Dict[str, str]:
@@ -91,39 +71,26 @@ def load_output(filename: str) -> Dict:
         return json.load(file)
 
 
-def is_file_processed(filename: str) -> bool:
-    """
-    Checks if the output file associated with the given filename exists,
-    indicating whether the file has been processed.
-
-    Args:
-        filename (str): The filename for which to check the processing status.
-
-    Returns:
-        bool: True if the output file exists, False otherwise.
-    """
-    output_path = get_output_path(filename)
-    return os.path.exists(output_path)
-
-
-def save_to_json(upload_status, name, timestamp, explanation=None):
+def save_to_json(uid: str, upload_status: str, name: str, finish_time: datetime = None, explanation=None):
     """
     Creates a dictionary object to represent the upload status, including the
     filename, timestamp, processing status, and an optional explanation.
 
     Args:
+        uid: the uid of the upload.
         upload_status: The status of the upload.
         name: The name of the file.
-        timestamp: The timestamp of the upload.
+        finish_time: ThAn optional finish time of the upload.
         explanation: An optional explanation for the upload status.
 
     Returns:
         Dict: A dictionary representing the upload status.
     """
     return {
+        'uid': uid,
         'status': upload_status,
         'filename': name,
-        'timestamp': timestamp,
+        'finish time': str(finish_time),
         'explanation': explanation
     }
 
