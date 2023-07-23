@@ -19,29 +19,6 @@ def generate_uid() -> str:
     return str(uuid4())
 
 
-def get_file_info(filename: str) -> Dict[str, str]:
-    """
-    Extracts information from the filename of an uploaded file.
-
-    Args:
-        filename (str): The filename of the uploaded file.
-
-    Returns:
-        Dict[str, str]: A dictionary containing the extracted file information,
-                        including name, timestamp, and UID.
-    """
-    split_name = filename.split('_')
-    name = "".join(split_name[i] + "_" for i in range(len(split_name) - 2))
-    name = name[0:-1]
-    timestamp = split_name[-2]
-    uid = split_name[-1].split(".")[0]
-    return {
-        'name': name,
-        'timestamp': timestamp,
-        'uid': uid
-    }
-
-
 def get_output_path(filename: str) -> str:
     """
     Retrieves the path to the output file associated with the given filename.
