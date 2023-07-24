@@ -1,10 +1,9 @@
 from flask import Flask, Response, request, jsonify, render_template, redirect, flash, url_for
 from dotenv import load_dotenv
-from flask_util import set_path, load_output, save_to_json
-from flask_util import UPLOADS_FOLDER, os
+from flask_util import set_path, load_output, save_to_json, save_upload, save_upload_with_user
 import json
+import os
 import threading
-from datetime import datetime
 from flask_explainer import explainer_system, setup_explainer
 from db_model import Session, User, Upload, create_all
 
@@ -28,31 +27,6 @@ def setup_app():
     setup_explainer()
 
 
-def save_upload(file):
-    with Session() as session:
-        anonymous_upload = Upload(filename=file.filename, upload_time=datetime.now())
-        session.add(anonymous_upload)
-        session.commit()
-        _, file_type = os.path.splitext(file.filename)
-        file.save(os.path.join(UPLOADS_FOLDER, f"{anonymous_upload.uid}{file_type}"))
-        return anonymous_upload.uid
-
-
-def save_upload_with_user(file, email: str):
-    with Session() as session:
-        user = session.query(User).filter_by(email=email).first()
-        if not user:
-            user = User(email=email)
-            session.add(user)
-            session.commit()
-        user_upload = Upload(filename=file.filename, upload_time=datetime.now(), user=user)
-        session.add(user_upload)
-        session.commit()
-        _, file_type = os.path.splitext(file.filename)
-        file.save(os.path.join(UPLOADS_FOLDER, f"{user_upload.uid}{file_type}"))
-        return user_upload.uid
-
-
 @app.route('/')
 def home():
     """
@@ -74,7 +48,7 @@ def upload():
     If a GET request is received, it renders the upload.html template.
 
     Returns:
-        str: The rendered HTML page or a JSON response with the UID.
+        str: The rendered HTML page or a JSON response with the UID and HTTP status code 200.
     """
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -112,7 +86,7 @@ def status(uid):
         file_data = session.query(Upload).filter_by(uid=uid).first()
         if file_data:
             if file_data.status == "done":
-                output = load_output(f"{uid}")
+                output = load_output(f"{uid}.json")
                 status_info = save_to_json(uid, file_data.status, file_data.filename, file_data.finish_time, output)
             else:
                 status_info = save_to_json(uid, file_data.status, file_data.filename, file_data.finish_time)
