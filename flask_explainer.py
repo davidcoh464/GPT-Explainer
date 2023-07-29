@@ -2,7 +2,7 @@ from presentation_parser import PresentationParser
 from slide_handler import SlideHandler
 from output_manage import OutputManage
 from datetime import datetime
-from flask_util import UPLOADS_FOLDER, OUTPUTS_FOLDER
+from flask_util import UPLOADS_FOLDER, OUTPUTS_FOLDER, status_pending, status_done
 from db_model import Session, Upload
 import threading
 import asyncio
@@ -56,14 +56,14 @@ def explainer_system(stop_event: threading.Event):
     """
     while not stop_event.is_set():
         with Session() as session:
-            upload_files = session.query(Upload).filter_by(status="pending").all()
+            upload_files = session.query(Upload).filter_by(status=status_pending).all()
             for upload_file in upload_files:
                 if not stop_event.is_set():
                     try:
                         _, file_type = os.path.splitext(upload_file.filename)
                         process_file(f"{upload_file.uid}{file_type}")
                         upload_file.finish_time = datetime.now()
-                        upload_file.status = "done"
+                        upload_file.status = status_done
                         session.commit()
                     except KeyError:
                         continue

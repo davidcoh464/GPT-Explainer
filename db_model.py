@@ -15,6 +15,11 @@ Session = scoped_session(sessionmaker(bind=engine))
 Base = declarative_base()
 
 
+class UploadStatus:
+    done = "done"
+    pending = "pending"
+
+
 def generate_uid() -> str:
     """
     Generates a unique identifier (UID) using the UUID4 algorithm.
@@ -59,7 +64,7 @@ class Upload(Base):
     filename: Mapped[str] = mapped_column(String(128), nullable=False)
     upload_time: Mapped[DateTime] = mapped_column(DateTime, nullable=False)
     finish_time: Mapped[Optional[DateTime]] = mapped_column(DateTime)
-    status: Mapped[str] = mapped_column(Enum("pending", "done", name="upload_status"), default="pending")
+    status: Mapped[UploadStatus] = mapped_column(Enum(UploadStatus.pending, UploadStatus.done), default=UploadStatus.pending)
     user_id: Mapped[Optional[int]] = mapped_column(ForeignKey('user.id'))
 
 
