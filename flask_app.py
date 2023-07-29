@@ -1,6 +1,7 @@
 from flask import Flask, Response, request, jsonify, render_template, redirect, flash, url_for
 from dotenv import load_dotenv
 from flask_util import set_path, load_output, save_to_json, save_upload, save_upload_with_user
+from flask_util import status_done
 import json
 import os
 import threading
@@ -9,8 +10,6 @@ from db_model import Session, User, Upload, create_all
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/db.sqlite3'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 def setup_app():
@@ -20,10 +19,12 @@ def setup_app():
     """
     load_dotenv()
     app.secret_key = os.getenv("SECRET_KEY")
+    set_path()
     app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
     app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/db.sqlite3'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     create_all()
-    set_path()
     setup_explainer()
 
 
@@ -85,7 +86,7 @@ def status(uid):
     with Session() as session:
         file_data = session.query(Upload).filter_by(uid=uid).first()
         if file_data:
-            if file_data.status == "done":
+            if file_data.status == status_done:
                 output = load_output(f"{uid}.json")
                 status_info = save_to_json(uid, file_data.status, file_data.filename, file_data.finish_time, output)
             else:
