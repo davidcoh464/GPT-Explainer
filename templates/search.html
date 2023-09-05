@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Status search{% endblock %}
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <form method="POST">
+        <label>Search by UID:</label>
+        <input type="text" name="uid" placeholder="Enter UID" size="37">
+        <button type="submit">Search</button>
+    </form>
+    <br>
+    <form method="POST">
+        <label>Search by Email:</label>
+        <input type="text" name="email" placeholder="Enter Email">
+        <label>And Filename:</label>
+        <input type="text" name="filename" placeholder="Enter Filename">
+        <button type="submit">Search</button>
+    </form>
+{% endblock %}
