@@ -6,7 +6,7 @@ import time
 # Define the base URL for the running Flask app
 BASE_URL = 'http://localhost:5000'
 # Define the path to your file
-FILE_PATH = 'can you.pptx'
+FILE_PATH = 'tests/can you.pptx'
 
 
 @pytest.fixture(scope='session', autouse=True)
