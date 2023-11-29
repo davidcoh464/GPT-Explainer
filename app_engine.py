@@ -5,7 +5,7 @@ import sys
 from tkinter import filedialog
 from dotenv import load_dotenv
 from file_reader import read_file
-from slide_handler import SlideHandler
+from api_handler.slide_handler import SlideHandler
 from output_manage import OutputManage
 
 WINDOWS_PLATFORM = 'win'

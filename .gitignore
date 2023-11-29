@@ -5,3 +5,4 @@ __pycache__/
 outputs/
 uploads/
 db/
+.pytest_cache

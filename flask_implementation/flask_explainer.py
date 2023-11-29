@@ -1,9 +1,9 @@
-from presentation_parser import PresentationParser
-from slide_handler import SlideHandler
+from file_reader.read_file import extract_text
+from api_handler.slide_handler import SlideHandler
 from output_manage import OutputManage
 from datetime import datetime
-from flask_util import UPLOADS_FOLDER, OUTPUTS_FOLDER, status_pending, status_done
-from db_model import Session, Upload
+from flask_implementation.flask_util import UPLOADS_FOLDER, OUTPUTS_FOLDER, status_pending, status_done
+from flask_implementation.db_model import Session, Upload
 import threading
 import asyncio
 import os
@@ -36,7 +36,7 @@ def process_file(filename: str):
     """
 
     upload_path = f"{UPLOADS_FOLDER}/{filename}"
-    slides = PresentationParser.extract_text(upload_path)
+    slides = extract_text(upload_path)
     responses = asyncio.run(SlideHandler.response_handler(slides))
     output_path = f"{OUTPUTS_FOLDER}/{filename}"
     OutputManage.save_to_json(responses, output_path)

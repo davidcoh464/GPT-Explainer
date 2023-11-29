@@ -1,4 +1,5 @@
-from file_reader import pdf_parser, pptx_parser
+from file_reader import pdf_parser
+from file_reader import pptx_parser
 
 
 def extract_text(path_to_file: str) -> list[str]:

@@ -69,7 +69,7 @@ def set_path():
     """
     Create the uploads and outputs folders if they don't exist
     """
-    Path('db').mkdir(parents=True, exist_ok=True)
+    Path('../db').mkdir(parents=True, exist_ok=True)
     Path(UPLOADS_FOLDER).mkdir(parents=True, exist_ok=True)
     Path(OUTPUTS_FOLDER).mkdir(parents=True, exist_ok=True)
 

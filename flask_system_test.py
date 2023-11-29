@@ -3,6 +3,7 @@ import subprocess
 import requests
 import time
 
+
 # Define the base URL for the running Flask app
 BASE_URL = 'http://localhost:5000'
 # Define the path to your file
@@ -12,7 +13,7 @@ FILE_PATH = 'tests/can you.pptx'
 @pytest.fixture(scope='session', autouse=True)
 def run_flask_app():
     # Start the Flask app as a subprocess
-    process = subprocess.Popen(['python', 'flask_app.py'])
+    process = subprocess.Popen(['python', 'flask_implementation/flask_app.py'])
 
     # Wait for the app to start up
     time.sleep(2)
