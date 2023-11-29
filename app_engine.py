@@ -1,11 +1,14 @@
 import asyncio
 import tkinter as tk
 import os
+import sys
 from tkinter import filedialog
 from dotenv import load_dotenv
-from presentation_parser import PresentationParser
+from file_reader import read_file
 from slide_handler import SlideHandler
 from output_manage import OutputManage
+
+WINDOWS_PLATFORM = 'win'
 
 
 def configure():
@@ -13,6 +16,9 @@ def configure():
     Loads the variables from the .env file.
     """
     load_dotenv()
+    # Set asyncio platform
+    if sys.platform.startswith(WINDOWS_PLATFORM):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 def get_user_path() -> str:
@@ -28,15 +34,15 @@ def get_user_path() -> str:
     root = tk.Tk()
     root.withdraw()
     file_path = filedialog.askopenfilename(
-        title="Select PowerPoint file",
-        filetypes=[("PowerPoint files", "*.pptx")]
+        title="Select PowerPoint or pdf file",
+        filetypes=[("PowerPoint files", "*.pptx"), ("pdf files", "*.pdf")]
     )
     if not file_path:
         raise ValueError("No file selected.")
     elif not os.path.exists(file_path):
         raise ValueError("The selected file does not exist.")
-    elif not file_path.lower().endswith('.pptx'):
-        raise ValueError("Invalid file type. Please select a .pptx file.")
+    elif not file_path.lower().endswith(('.pptx', '.pdf')):
+        raise ValueError("Invalid file type. Please select a .pptx or .pdf file.")
     else:
         return file_path
 
@@ -50,7 +56,7 @@ def main():
     """
     configure()
     user_path = get_user_path()
-    slides = PresentationParser.extract_text(user_path)
+    slides = read_file.extract_text(user_path)
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(SlideHandler.response_handler(slides))
     output_file = OutputManage.save_to_json(responses, user_path)
