@@ -1,5 +1,5 @@
 from prompt_generator import PromptGenerator
-from api_handler.api_request import ApiRequest
+from api.api_request import ApiRequest
 import asyncio
 
 

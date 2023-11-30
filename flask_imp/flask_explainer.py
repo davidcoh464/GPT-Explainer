@@ -1,13 +1,14 @@
-from file_reader.read_file import extract_text
-from api_handler.slide_handler import SlideHandler
-from output_manage import OutputManage
-from datetime import datetime
-from flask_implementation.flask_util import UPLOADS_FOLDER, OUTPUTS_FOLDER, status_pending, status_done
-from flask_implementation.db_model import Session, Upload
-import threading
 import asyncio
 import os
 import sys
+import threading
+from datetime import datetime
+
+from flask_imp.db_model import Session, Upload
+from flask_imp.flask_util import UPLOADS_FOLDER, OUTPUTS_FOLDER, status_pending, status_done
+from output_manage import OutputManage
+from read_data import extract_text
+from api.slide_handler import SlideHandler
 
 TIME_TO_SLEEP = 10
 WINDOWS_PLATFORM = 'win'

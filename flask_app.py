@@ -1,13 +1,15 @@
 import json
 import os
 import threading
-from flask import Flask, Response, request, jsonify, render_template, redirect, flash, url_for
-from dotenv import load_dotenv
-from flask_implementation.flask_util import set_path, load_output, save_to_json
-from flask_implementation.flask_util import status_done, save_upload, save_upload_with_user
-from flask_implementation.flask_explainer import explainer_system, setup_explainer
-from flask_implementation.db_model import Session, User, Upload, create_all
 
+from dotenv import load_dotenv
+from flask import Flask, Response, request, jsonify
+from flask import render_template, redirect, flash, url_for
+
+from flask_imp.flask_explainer import explainer_system, setup_explainer
+from flask_imp.db_model import Session, User, Upload, create_all
+from flask_imp.flask_util import set_path, load_output, save_to_json
+from flask_imp.flask_util import status_done, save_upload, save_upload_with_user
 
 app = Flask(__name__)
 

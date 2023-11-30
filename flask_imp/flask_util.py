@@ -1,13 +1,13 @@
+import json
+import os
+from datetime import datetime
 from pathlib import Path
 from typing import Dict
-from datetime import datetime
-from db_model import Session, Upload, User, UploadStatus
-import os
-import json
 
+from flask_imp.db_model import Session, Upload, User, UploadStatus
 
-UPLOADS_FOLDER = "uploads"
-OUTPUTS_FOLDER = "outputs"
+UPLOADS_FOLDER = "../uploads"
+OUTPUTS_FOLDER = "../outputs"
 status_done = UploadStatus.done
 status_pending = UploadStatus.pending
 

@@ -1,5 +1,5 @@
 import pytest
-from flask_implementation.flask_app import app
+from flask_app import app
 import json
 
 

@@ -1,5 +1,6 @@
 .env
 .idea
+*.pptx
 *.log
 __pycache__/
 outputs/
