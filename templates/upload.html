@@ -13,10 +13,9 @@
         {% endif %}
     {% endwith %}
     <form method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept=".pptx">
+        <input type="file" name="file" accept=".pptx, .pdf">
         <input type="email" name="email" placeholder="Enter email" value="{{email if email}}">
         <br/>
         <input type="submit" value="Upload">
     </form>
-
 {% endblock %}

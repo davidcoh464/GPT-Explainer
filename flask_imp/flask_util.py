@@ -1,13 +1,13 @@
+import json
+import os
+from datetime import datetime
 from pathlib import Path
 from typing import Dict
-from datetime import datetime
-from db_model import Session, Upload, User, UploadStatus
-import os
-import json
 
+from flask_imp.db_model import Session, Upload, User, UploadStatus
 
-UPLOADS_FOLDER = "uploads"
-OUTPUTS_FOLDER = "outputs"
+UPLOADS_FOLDER = "../uploads"
+OUTPUTS_FOLDER = "../outputs"
 status_done = UploadStatus.done
 status_pending = UploadStatus.pending
 
@@ -69,7 +69,7 @@ def set_path():
     """
     Create the uploads and outputs folders if they don't exist
     """
-    Path('db').mkdir(parents=True, exist_ok=True)
+    Path('../db').mkdir(parents=True, exist_ok=True)
     Path(UPLOADS_FOLDER).mkdir(parents=True, exist_ok=True)
     Path(OUTPUTS_FOLDER).mkdir(parents=True, exist_ok=True)
 

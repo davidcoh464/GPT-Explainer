@@ -1,7 +1,9 @@
 .env
 .idea
+*.pptx
 *.log
 __pycache__/
 outputs/
 uploads/
 db/
+.pytest_cache

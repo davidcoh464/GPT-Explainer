@@ -1,12 +1,12 @@
-from sqlalchemy import Enum, ForeignKey, String, DateTime
-from sqlalchemy.orm import Mapped, mapped_column, relationship, sessionmaker, scoped_session, declarative_base
 from typing import List, Optional
-from sqlalchemy import create_engine
 from uuid import uuid4
 
+from sqlalchemy import Enum, ForeignKey, String, DateTime
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Mapped, mapped_column, relationship, sessionmaker, scoped_session, declarative_base
 
 # Create the engine
-engine = create_engine('sqlite:///db/db.sqlite3')
+engine = create_engine('sqlite:///../db/db.sqlite3')
 
 # Create a scoped session to manage sessions for each request
 Session = scoped_session(sessionmaker(bind=engine))

@@ -1,15 +1,5 @@
-"""
-slide_handler.py
-
-This module handles the processing and handling of slides.
-
-Classes:
-- SlideHandler
-
-"""
-
 from prompt_generator import PromptGenerator
-from api_request import ApiRequest
+from api.api_request import ApiRequest
 import asyncio
 
 
