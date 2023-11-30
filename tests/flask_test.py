@@ -2,6 +2,9 @@ import pytest
 from flask_app import app
 import json
 
+# Define the path to your file
+FILE_PATH = 'can you.pptx'
+
 
 @pytest.fixture
 def client():
@@ -29,7 +32,7 @@ def test_upload(client):
     Test case for the upload route ("/upload").
     It sends a POST request with a file to the upload route and asserts the response.
     """
-    response = client.post('/upload', data={'file': (open('can you.pptx', 'rb'), 'can you.pptx')})
+    response = client.post('/upload', data={'file': (open(f'{FILE_PATH}', 'rb'), f'{FILE_PATH}')})
     assert response.status_code == 200
     assert b"uid" in response.data
 
@@ -50,7 +53,7 @@ def test_upload_status(client):
     It uploads a file and then sends a GET request to the status route using the uploaded UID.
     It asserts the response to check if the status is "pending".
     """
-    response = client.post('/upload', data={'file': (open('can you.pptx', 'rb'), 'can you.pptx')})
+    response = client.post('/upload', data={'file': (open(f'{FILE_PATH}', 'rb'), f'{FILE_PATH}')})
     assert response.status_code == 200
     data = json.loads(response.data)
     uid = data.get('uid')
