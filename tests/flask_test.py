@@ -1,6 +1,7 @@
 import pytest
 from flask_app import app
 import json
+import os
 
 # Define the path to your file
 FILE_PATH = 'can you.pptx'
@@ -53,7 +54,7 @@ def test_upload_status(client):
     It uploads a file and then sends a GET request to the status route using the uploaded UID.
     It asserts the response to check if the status is "pending".
     """
-    response = client.post('/upload', data={'file': (open(f'{FILE_PATH}', 'rb'), f'{FILE_PATH}')})
+    response = client.post('/upload', data={'file': (open(f'{FILE_PATH}', 'rb'), 'can you.pptx')})
     assert response.status_code == 200
     data = json.loads(response.data)
     uid = data.get('uid')
