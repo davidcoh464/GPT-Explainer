@@ -5,5 +5,5 @@
 __pycache__/
 outputs/
 uploads/
-db/
+*.sqlite3
 .pytest_cache
