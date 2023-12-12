@@ -6,7 +6,7 @@ from tkinter import filedialog
 from dotenv import load_dotenv
 import read_data
 from api.slide_handler import SlideHandler
-from output_manage import OutputManage
+from write_data.output_manage import OutputManage
 
 WINDOWS_PLATFORM = 'win'
 
@@ -59,7 +59,7 @@ def main():
     slides = read_data.extract_text(user_path)
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(SlideHandler.response_handler(slides))
-    output_file = OutputManage.save_to_json(responses, user_path)
+    output_file = OutputManage.save_to_txt(responses, user_path)
     print(f"Saving the output file in {output_file}")
 
 

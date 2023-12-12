@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import Mapped, mapped_column, relationship, sessionmaker, scoped_session, declarative_base
 
 # Create the engine
-engine = create_engine('sqlite:///../db/db.sqlite3')
+engine = create_engine('sqlite:///db/db.sqlite3')
 
 # Create a scoped session to manage sessions for each request
 Session = scoped_session(sessionmaker(bind=engine))
@@ -66,6 +66,31 @@ class Upload(Base):
     finish_time: Mapped[Optional[DateTime]] = mapped_column(DateTime)
     status: Mapped[UploadStatus] = mapped_column(Enum(UploadStatus.pending, UploadStatus.done), default=UploadStatus.pending)
     user_id: Mapped[Optional[int]] = mapped_column(ForeignKey('user.id'))
+
+    @classmethod
+    def delete_by_uid(cls, uid: str, session: Session = None):
+        """
+        Deletes an instance of Upload by UID.
+
+        Args:
+            uid (str): The UID of the Upload to be deleted.
+            session (Session, optional): The SQLAlchemy session. If not provided, a new session will be created.
+
+        Raises:
+            sqlalchemy.orm.exc.NoResultFound: If no upload with the specified UID is found.
+        """
+        if session is None:
+            session = Session()
+
+        try:
+            upload = session.query(cls).filter_by(uid=uid).one()
+            session.delete(upload)
+            session.commit()
+        except Exception as e:
+            session.rollback()
+            raise e
+        finally:
+            session.close()
 
 
 def create_all():

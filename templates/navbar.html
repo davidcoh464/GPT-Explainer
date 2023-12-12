@@ -1,16 +1,19 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{{ url_for('home') }}">Home</a>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ml-auto" id="navList"> <!-- Added ml-auto for right alignment -->
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('upload') }}">Upload</a>
+          <a class="nav-link" id="home_nav" href="{{ url_for('home') }}">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('search') }}">Status</a>
+          <a class="nav-link" id="upload_nav" href="{{ url_for('upload') }}" >Upload</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="search_nav" href="{{ url_for('search') }}">Search</a>
         </li>
       </ul>
     </div>

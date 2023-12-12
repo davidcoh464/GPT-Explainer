@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %} {% endblock %}
+<title>Status</title>
+{% block content%}
+  <form method="POST">
+    <fieldset>
+      <legend>Select download type</legend>
+      <input type="submit" name="file_type" value="txt">
+      <input type="submit" name="file_type" value="pdf">
+      <input type="submit" name="file_type" value="docx">
+      <input type="submit" name="file_type" value="json">
+    </fieldset>
+  </form>
+<table class="table">
+  {{ status_info | safe}}
+</table>
+{% endblock%}
