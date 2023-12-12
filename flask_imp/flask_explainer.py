@@ -6,11 +6,11 @@ from datetime import datetime
 
 from flask_imp.db_model import Session, Upload
 from flask_imp.flask_util import UPLOADS_FOLDER, OUTPUTS_FOLDER, status_pending, status_done
-from output_manage import OutputManage
+from write_data.output_manage import OutputManage
 from read_data import extract_text
 from api.slide_handler import SlideHandler
 
-TIME_TO_SLEEP = 10
+TIME_TO_SLEEP = 5
 WINDOWS_PLATFORM = 'win'
 
 
@@ -35,12 +35,12 @@ def process_file(filename: str):
     Args:
         filename (str): The filename of the uploaded file to be processed.
     """
-
     upload_path = f"{UPLOADS_FOLDER}/{filename}"
-    slides = extract_text(upload_path)
-    responses = asyncio.run(SlideHandler.response_handler(slides))
-    output_path = f"{OUTPUTS_FOLDER}/{filename}"
-    OutputManage.save_to_json(responses, output_path)
+    if os.path.exists(upload_path):
+        slides = extract_text(upload_path)
+        responses = asyncio.run(SlideHandler.response_handler(slides))
+        output_path = f"{OUTPUTS_FOLDER}/{filename}"
+        OutputManage.save_to_json(responses, output_path)
 
 
 def explainer_system(stop_event: threading.Event):
@@ -66,6 +66,7 @@ def explainer_system(stop_event: threading.Event):
                         upload_file.finish_time = datetime.now()
                         upload_file.status = status_done
                         session.commit()
-                    except KeyError:
+                    except KeyError as e:
+                        print(e)
                         continue
         stop_event.wait(timeout=TIME_TO_SLEEP)
