@@ -27,18 +27,19 @@ def setup_explainer():
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
-def process_file(filename: str):
+def process_file(filename: str, custom_prompt: str = ""):
     """
     Processes the uploaded file by extracting text from presentation slides,
     handling the slides asynchronously, and saving the responses as JSON.
-
     Args:
         filename (str): The filename of the uploaded file to be processed.
+        custom_prompt (str, optional): An optional custom prompt for text generation.
+                                      If not specified, a default prompt will be used.
     """
     upload_path = f"{UPLOADS_FOLDER}/{filename}"
     if os.path.exists(upload_path):
         slides = extract_text(upload_path)
-        responses = asyncio.run(SlideHandler.response_handler(slides))
+        responses = asyncio.run(SlideHandler.response_handler(slides, custom_prompt))
         output_path = f"{OUTPUTS_FOLDER}/{filename}"
         OutputManage.save_to_json(responses, output_path)
 
@@ -62,7 +63,7 @@ def explainer_system(stop_event: threading.Event):
                 if not stop_event.is_set():
                     try:
                         _, file_type = os.path.splitext(upload_file.filename)
-                        process_file(f"{upload_file.uid}{file_type}")
+                        process_file(f"{upload_file.uid}{file_type}", upload_file.prompt)
                         upload_file.finish_time = datetime.now()
                         upload_file.status = status_done
                         session.commit()
