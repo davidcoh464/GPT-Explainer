@@ -18,5 +18,6 @@ def get_prompt(slide_content: str, slide_index: int, custom_prompt: str = "") ->
     """
     if custom_prompt == "":
         custom_prompt = f"Rewrite the following page in a better way:"
-    prompt = f"{custom_prompt}\nPage number: {slide_index}\n{slide_content}"
+    page_slide = 'Slide' if 'slide' in custom_prompt else 'Page'
+    prompt = f"{custom_prompt}\n{page_slide} number: {slide_index}\n{slide_content}"
     return prompt
