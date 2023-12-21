@@ -12,22 +12,17 @@ WINDOWS_PLATFORM = 'win'
 
 
 def configure():
-    """
-    Loads the variables from the .env file.
-    """
+    """Load variables from the .env file and set asyncio platform."""
     load_dotenv()
-    # Set asyncio platform
     if sys.platform.startswith(WINDOWS_PLATFORM):
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 def get_user_path() -> str:
     """
-    Opens a file dialog to prompt the user for a PowerPoint file (.pptx) path.
-
+    Prompt user to select a PowerPoint (.pptx) or PDF (.pdf) file.
     Returns:
-        str: The path of the selected PowerPoint file.
-
+        str: Path of the selected file.
     Raises:
         ValueError: If an invalid file type is selected or no file is selected.
     """
@@ -49,17 +44,16 @@ def get_user_path() -> str:
 
 def main():
     """
-    Main function to process the PowerPoint presentation.
-
-    Parses the presentation, extracts text from each slide,
-    sends it to the OpenAI API for response, and saves the responses to a JSON file.
+    Process PowerPoint presentation (or pdf file).
+    Parse the presentation, extract text from each slide,
+    send it to the OpenAI API for response, and save responses to a PDF file.
     """
     configure()
     user_path = get_user_path()
     slides = read_data.extract_text(user_path)
     loop = asyncio.get_event_loop()
     responses = loop.run_until_complete(SlideHandler.response_handler(slides))
-    output_file = OutputManage.save_to_txt(responses, user_path)
+    output_file = OutputManage.save_to_pdf(responses, user_path)
     print(f"Saving the output file in {output_file}")
 
 
