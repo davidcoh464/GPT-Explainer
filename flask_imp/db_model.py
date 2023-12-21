@@ -33,7 +33,6 @@ def generate_uid() -> str:
 class User(Base):
     """
     Represents a User entity in the database.
-
     Attributes:
         id (int): The primary key for the User table.
         email (str): The email address of the user.
@@ -48,7 +47,6 @@ class User(Base):
 class Upload(Base):
     """
     Represents an Upload entity in the database.
-
     Attributes:
         id (int): The primary key for the Upload table.
         uid (str): The unique identifier for the upload.
@@ -57,6 +55,7 @@ class Upload(Base):
         finish_time (Optional[DateTime]): The timestamp of when the Explainer finished processing the upload.
         status (str): The current status of the upload (either 'pending' or 'done').
         user_id (Optional[int]): The foreign key referencing the User table, indicating the user who uploaded this upload.
+        prompt (Optional[str]): Free text prompt associated with the upload.
     """
     __tablename__ = "upload"
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -66,6 +65,7 @@ class Upload(Base):
     finish_time: Mapped[Optional[DateTime]] = mapped_column(DateTime)
     status: Mapped[UploadStatus] = mapped_column(Enum(UploadStatus.pending, UploadStatus.done), default=UploadStatus.pending)
     user_id: Mapped[Optional[int]] = mapped_column(ForeignKey('user.id'))
+    prompt: Mapped[Optional[str]] = mapped_column(String(255), server_default="")
 
     @classmethod
     def delete_by_uid(cls, uid: str, session: Session = None):

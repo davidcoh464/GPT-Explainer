@@ -3,21 +3,19 @@ import os
 import re
 from fpdf import FPDF
 from docx import Document
+from bidi.algorithm import get_display
 
 
 class OutputManage:
     @staticmethod
     def contains_hebrew(text):
-        hebrew_pattern = re.compile(r'[\u0590-\u05FF\s]+')  # Unicode range for Hebrew characters
-
+        hebrew_pattern = re.compile(r'[\u0590-\u05FF]+')
         return bool(hebrew_pattern.search(text))
 
     @staticmethod
     def reverse_hebrew(text):
-        def reverse_hebrew_match(match):
-            return match.group(0)[::-1]
-        hebrew_pattern = re.compile(r'[\u0590-\u05FF\s,.\?!]+')
-        reversed_text = hebrew_pattern.sub(reverse_hebrew_match, text)
+        hebrew_pattern = re.compile(r'([:,.?/&#!_-]?\s?[\u0590-\u05FF]+)+')
+        reversed_text = hebrew_pattern.sub(lambda match: match.group(0)[::-1], text)
         return reversed_text
 
     @staticmethod
@@ -76,10 +74,11 @@ class OutputManage:
         pdf.set_font("Arial", size=12)
         for page_number, page_content in enumerate(content_list, start=1):
             pdf.add_page()
-            align = 'R' if OutputManage.contains_hebrew(page_content) else 'L'
             lines = page_content.split('\n')
             for line_number, line in enumerate(lines, start=1):
-                pdf.multi_cell(0, 10, txt=OutputManage.reverse_hebrew(line), ln=1, align='C' if line_number == 1 else align)
+                align = 'R' if OutputManage.contains_hebrew(line) else 'L'
+                line = get_display(line) if align == 'R' else line
+                pdf.multi_cell(0, 10, txt=line, ln=1, align='C' if line_number == 1 and len(lines) > 1 else align)
         pdf.output(output_file)
         return output_file
 

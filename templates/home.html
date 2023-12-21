@@ -2,5 +2,64 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>Welcome to flask app</h1>
+    <h1>Welcome to the Flask Upload and Processing App</h1>
+    <p>A robust solution for explaining and processing pptx and pdf files.</p>
+    <p>This application provides users with a seamless experience to upload files, incorporating optional prompts and email information.
+        Behind the scenes, an explanation system utilizes ChatGPT API to analyze each slide/page asynchronously using asyncio.</p>
+
+    <h2>Table of Contents</h2>
+    <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#usage">Usage</a></li>
+        <li><a href="#endpoints">Endpoints</a></li>
+    </ul>
+
+    <h2>Features</h2>
+    <ul>
+        <li><strong>File Upload:</strong> Users can easily upload pptx and pdf files,
+            including optional prompts and email information.</li>
+        <li><strong>Background Explanation System:</strong> The application processes each slide/page in the uploaded
+            files using the ChatGPT API, ensuring a comprehensive analysis in the background.</li>
+        <li><strong>Unique UID:</strong> Upon uploading a file, users receive a unique UID,
+            enabling them to conveniently search for the file output.</li>
+        <li><strong>Search Functionality:</strong> Users can search for the output file by the unique uid for the file or by the file name + email (if provided)</li>
+        <li><strong>Status Page:</strong> Once the file output is ready, users can view a detailed HTML table representation on the status page.</li>
+        <li><strong>Download Options:</strong> The processed output can be downloaded in various formats, including pdf, docx, json, or txt.</li>
+    </ul>
+
+    <h2>How it works</h2>
+    <ol>
+        <li><strong>Upload a File:</strong>
+            <ul>
+                <li>Navigate to the upload page.</li>
+                <li>Select a pptx or pdf file.</li>
+                <li>Optionally provide a prompt and email.</li>
+                <li>Upon submission, a unique UID is generated.</li>
+            </ul>
+        </li>
+        <li><strong>Background Processing:</strong>
+            <ul>
+                <li>The application utilizes asyncio to asynchronously send each slide/page to the ChatGPT API for analysis.</li>
+            </ul>
+        </li>
+        <li><strong>Search and Retrieve:</strong>
+            <ul>
+                <li>Users can search for the processed output using the unique UID, file name, or email associated with the upload.</li>
+            </ul>
+        </li>
+        <li><strong>View and Download:</strong>
+            <ul>
+                <li>Once the file output is ready, users can view a comprehensive HTML table representation on the status page.</li>
+                <li>Download the processed output in pdf, docx, json, or txt format.</li>
+            </ul>
+        </li>
+    </ol>
+    <h2>Endpoints</h2>
+    <ul>
+        <li><strong>Home Page:</strong> <a href="http://127.0.0.1:5000" target="_blank">http://127.0.0.1:5000</a></li>
+        <li><strong>Upload Page:</strong> <a href="http://127.0.0.1:5000/upload" target="_blank">http://127.0.0.1:5000/upload</a></li>
+        <li><strong>Status Page:</strong> <a href="http://127.0.0.1:5000/status/&lt;uid&gt;" target="_blank">http://127.0.0.1:5000/status/&lt;uid&gt;</a></li>
+        <li><strong>Search Page:</strong> <a href="http://127.0.0.1:5000/search" target="_blank">http://127.0.0.1:5000/search</a></li>
+    </ul>
 {% endblock %}

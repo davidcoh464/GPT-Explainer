@@ -17,16 +17,17 @@ app = Flask(__name__)
 
 def setup_app():
     """
-    Sets up the Flask application by loading environment variables from a .env file,
-    configuring app settings, and creating the uploads and outputs folders if they don't exist.
+    Sets up the Flask application by loading environment variables,
+    configuring app settings, and creating necessary folders.
     """
     load_dotenv()
     app.secret_key = os.getenv("SECRET_KEY")
     set_path()
-    app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000
-    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/db.sqlite3'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000  # Sets the maximum content length to 16 megabytes
+    app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True  # Enable pretty-printing for JSON responses
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/db.sqlite3'  # Set SQLite database URI
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Disable modification tracking
+    # Enable testing mode if 'test' is provided as a command-line argument
     if len(sys.argv) > 1 and str(sys.argv[1]).lower() == "test":
         app.config['TESTING'] = True
     create_all()
@@ -34,11 +35,11 @@ def setup_app():
 
 
 @app.route('/')
+@app.route('/home', alias=True)
 def home():
     """
-    Renders the home.html template and returns the rendered HTML page.
-    This function is associated with the root URL '/'.
-
+    Renders the home.html template.
+    This function is associated with the root URL '/' or '/home'.
     Returns:
         str: The rendered HTML page.
     """
@@ -48,13 +49,12 @@ def home():
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     """
-    Handles the file upload functionality. Accepts both GET and POST requests.
+    Handles file upload functionality. Accepts GET and POST requests.
     If a POST request is received with a file attached, it saves the file,
     generates a UID, and returns the UID as a JSON response.
     If a GET request is received, it renders the upload.html template.
-
     Returns:
-        str: The rendered HTML page or a JSON response with the UID and HTTP status code 200.
+        str: Rendered HTML page or JSON response with UID and HTTP status code 200.
     """
     if request.method == 'POST':
         if 'file' not in request.files:
@@ -65,10 +65,11 @@ def upload():
             flash('No selected file')
             return redirect(request.url)
         email = request.form.get('email')
+        prompt = request.form.get('prompt', '')
         if email:
-            uid = save_upload_with_user(file, email)
+            uid = save_upload_with_user(file, email, prompt)
         else:
-            uid = save_upload(file)
+            uid = save_upload(file, prompt)
         return jsonify({'uid': uid}), 200
     return render_template("upload.html")
 
@@ -76,15 +77,13 @@ def upload():
 @app.route('/status/<uid>', methods=['GET'])
 def status_get(uid):
     """
-    Retrieves the processing status of the file associated with the given UID.
-    If the file is processed, it loads the output and generates a JSON response
-    with the processing status, filename, timestamp, and output.
-    If the file is not found or not processed, it generates a JSON response
-    indicating the status as 'not found'.
+    Retrieves the processing status and information of the file with the given UID.
+    If the file is processed, it returns a JSON response with status, filename,
+    timestamp, and output. If not found or not processed, it returns a 'not found' JSON response.
     Args:
         uid (str): The UID of the file.
     Returns:
-        Response: A JSON response with the processing status and information.
+        Response: JSON response with processing status and information.
     """
     with Session() as session:
         file_data = session.query(Upload).filter_by(uid=uid).first()
@@ -98,14 +97,21 @@ def status_get(uid):
                 return jsonify(status_info), 200
             else:
                 status_info = json2html.convert(json=status_info)
-                # status_info = status_info[:7] + " class = 'table table-bordered' " + status_info[7:]
-                # status_info = status_info.replace('<th>', '<th style="border-width:1">')
                 return render_template("status.html", status_info=status_info)
     return jsonify({'status': 'not found'}), 404
 
 
 @app.route('/status/<uid>', methods=['POST'])
 def status_post(uid):
+    """
+    Handles file download functionality based on the processing status of the file.
+    If the file is processed and available, it triggers a file download response.
+    If the file is not ready or the status UID is not found, it provides appropriate feedback.
+    Args:
+        uid (str): The UID of the file.
+    Returns:
+        Response: File download response or redirection with feedback.
+    """
     with Session() as session:
         file_data = session.query(Upload).filter_by(uid=uid).first()
         if file_data:
@@ -123,12 +129,11 @@ def status_post(uid):
 @app.route('/search', methods=['POST', 'GET'])
 def search():
     """
-    Handles the search functionality. Accepts both POST and GET requests.
-    If a POST request is received with a non-empty UID, it redirects to the
-    'status' route with the UID as a parameter.
-    If a GET request is received, it renders the 'search.html' template.
+    Handles search functionality for file status. Accepts POST and GET requests.
+    For POST requests, if a UID is provided, it redirects to the 'status' route with the UID parameter.
+    For GET requests, it renders the 'search.html' template.
     Returns:
-        str: The rendered HTML page or a redirect response.
+        str: Rendered HTML page or a redirect response.
     """
     if request.method == 'POST':
         uid = request.form.get('uid')
@@ -136,7 +141,7 @@ def search():
         filename = request.form.get('filename')
         if uid:
             return redirect(url_for('status_get', uid=uid))
-        elif email and filename:  # Only search if both email and filename are provided
+        elif email and filename:  # Search only if both email and filename are provided
             with Session() as session:
                 user = session.query(User).filter_by(email=email).first()
                 if user:
@@ -156,10 +161,10 @@ def search():
 
 def main():
     """
-    The entry point of the application.
-    It sets up the Flask app, starts the explainer system in a separate thread,
+    Entry point of the application. Sets up the Flask app,
+    starts the explainer system in a separate thread,
     runs the Flask app, and waits for the app to complete.
-    Finally, it raises the stop event to terminate the explainer system thread.
+    Finally, raises the stop event to terminate the explainer system thread.
     """
     setup_app()
     stop_event = threading.Event()
