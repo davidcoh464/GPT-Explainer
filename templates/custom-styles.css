@@ -1,0 +1,33 @@
+th{
+      border-width:thin;
+      border: 2px solid var(--bs-border-color);
+    }
+td{
+      border-width:thin;
+      border: 2px solid var(--bs-border-color);
+    }
+form{
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      width: fit-content;
+      padding: 20px;
+      text-align: center;
+    }
+button{
+      color:white;
+      background-color:blue;
+    }
+.nav-link{
+  border-left: 1px solid;
+}
+.expanding-input {
+      min-height: 8px;
+      width: 50%;
+      border: 2px solid #ccc;
+      padding: 8px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+.active {
+      color: #F8F8F8;
+      background-color: #4f81bd;
+    }
