@@ -86,7 +86,7 @@ def set_path():
     Path(OUTPUTS_FOLDER).mkdir(parents=True, exist_ok=True)
 
 
-def save_upload(file):
+def save_upload(file, prompt: str) -> str:
     """
     Saves the uploaded file as an anonymous upload.
     This function creates an Upload object in the database to represent the uploaded file
@@ -94,12 +94,12 @@ def save_upload(file):
     the UID associated with the uploaded file.
     Args:
         file (FileStorage): The uploaded file to be saved.
-
+        prompt (str): Free text prompt associated with the upload
     Returns:
         str: The UID associated with the uploaded file.
     """
     with Session() as session:
-        anonymous_upload = Upload(filename=file.filename, upload_time=datetime.now())
+        anonymous_upload = Upload(filename=file.filename, upload_time=datetime.now(), prompt=prompt)
         session.add(anonymous_upload)
         session.commit()
         _, file_type = os.path.splitext(file.filename)
@@ -107,7 +107,7 @@ def save_upload(file):
         return anonymous_upload.uid
 
 
-def save_upload_with_user(file, email: str):
+def save_upload_with_user(file, email: str, prompt: str) -> str:
     """
     Saves the uploaded file with the associated user.
     This function creates a User object in the database if the user with the provided
@@ -118,7 +118,7 @@ def save_upload_with_user(file, email: str):
     Args:
         file (FileStorage): The uploaded file to be saved.
         email (str): The email of the user associated with the uploaded file.
-
+        prompt (str): Free text prompt associated with the upload
     Returns:
         str: The UID associated with the uploaded file.
     """
@@ -128,7 +128,7 @@ def save_upload_with_user(file, email: str):
             user = User(email=email)
             session.add(user)
             session.commit()
-        user_upload = Upload(filename=file.filename, upload_time=datetime.now(), user=user)
+        user_upload = Upload(filename=file.filename, upload_time=datetime.now(), user=user, prompt=prompt)
         session.add(user_upload)
         session.commit()
         _, file_type = os.path.splitext(file.filename)
