@@ -1,0 +1,121 @@
+body{
+    font-family: "Arial","consolas", "sans-serif";
+}
+p{
+    text-align: justify;
+}
+
+table{
+    border-collapse: collapse;
+}
+
+form{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    width: fit-content;
+    padding: 20px;
+    text-align: center;
+}
+
+button{
+    background-color:#046daa;
+    color:white;
+    cursor: pointer;
+    padding: 7px;
+    border-radius: 4px;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    background-color: #f3f3f3;
+}
+
+nav li {
+    float: left;
+}
+
+nav li a {
+    display: block;
+    color: #666;
+    padding: 16px;
+    text-align: center;
+    text-decoration: none;
+}
+
+
+nav li a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+nav li a.active {
+    color: white;
+    background-color: #046daa;
+}
+
+div.home a:link, div.home a:visited {
+    display: block;
+    width: fit-content;
+    color: #046daa;
+    text-decoration: none;
+}
+
+div.home a:hover {
+    color: #666;
+}
+
+input:not([type="submit"], [type="file"], [type="checkbox"]){
+    border: 3px solid #ccc;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.expanding_input {
+      max-width: 500px;
+      width: 300px;
+}
+
+.close_button{
+    max-width:450px;
+    width: 100%;
+    display: block;
+    position: relative;
+    background: #00B792;
+    border: 4px solid #00fef4;
+    border-radius: 9px;
+    padding: 25px;
+    margin: 10px;
+    color: #fff;
+}
+
+.close_button span {
+    font: bold;
+    display: inline-block;
+    cursor: pointer;
+    color: #fff;
+    float:right;
+}
+
+input#file{
+    display:none;
+}
+
+input#file + label{
+    background-color:#4d8cf2;
+    padding: 8px;
+    color: #fff;
+    border: 2px solid #9ec3ff;
+    border-radius: 9px;
+}
+
+input#file + label:hover{
+    background-color: #3b73ce;
+    border-color: #729fe7;
+    cursor: pointer;
+}
+
+#file-name{
+    color: #bbb;
+}
