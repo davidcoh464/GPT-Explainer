@@ -5,7 +5,7 @@ from json2html import json2html
 
 from dotenv import load_dotenv
 from flask import Flask, Response, request, jsonify, send_file
-from flask import render_template, redirect, flash, url_for
+from flask import render_template, redirect, flash, url_for, send_from_directory, make_response
 
 from flask_imp.db_model import Session, User, Upload, create_all
 from flask_imp.flask_explainer import explainer_system, setup_explainer
@@ -32,6 +32,26 @@ def setup_app():
         app.config['TESTING'] = True
     create_all()
     setup_explainer()
+
+
+@app.route('/static/<filename>')
+def static_files(filename):
+    """
+    Serves static files from the Flask application's static directory with caching enabled.
+
+    This route function serves static files (such as CSS, JavaScript, images, etc.) located
+    in the Flask application's static directory. It sets the appropriate cache control headers
+    to enable caching in the client's browser, improving performance by reducing the need
+    to fetch static files on subsequent requests.
+    Args:
+        filename (str): The name of the static file to be served.
+    Returns:
+        Response: A Flask response object containing the static file to be served with caching headers.
+    """
+    cache_timeout = 360  # Cache files for 6 minutes
+    response = make_response(send_from_directory(app.static_folder, filename))
+    response.headers['Cache-Control'] = f"max-age={cache_timeout}, public"
+    return response
 
 
 @app.route('/')
@@ -62,7 +82,7 @@ def upload():
             return redirect(request.url)
         file = request.files.get('file')
         if file.filename == '':
-            flash('No selected file')
+            flash('No file selected')
             return redirect(request.url)
         email = request.form.get('email')
         prompt = request.form.get('prompt', '')
@@ -154,7 +174,7 @@ def search():
                 else:
                     flash(f"Email: {email} does not exist")
         else:
-            flash("Please enter a UID, or provide both email and filename")
+            flash("Please enter a UID, or provide both email and file name")
         return redirect(request.url)
     return render_template("search.html")
 

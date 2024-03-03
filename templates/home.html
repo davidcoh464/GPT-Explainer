@@ -2,6 +2,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+    <div class="home">
     <h1>Welcome to the Flask Upload and Processing App</h1>
     <p>A robust solution for explaining and processing pptx and pdf files.</p>
     <p>This application provides users with a seamless experience to upload files, incorporating optional prompts and email information.
@@ -11,11 +12,10 @@
     <ul>
         <li><a href="#features">Features</a></li>
         <li><a href="#how-it-works">How it works</a></li>
-        <li><a href="#usage">Usage</a></li>
         <li><a href="#endpoints">Endpoints</a></li>
     </ul>
 
-    <h2>Features</h2>
+    <h2 id="features">Features</h2>
     <ul>
         <li><strong>File Upload:</strong> Users can easily upload pptx and pdf files,
             including optional prompts and email information.</li>
@@ -28,7 +28,7 @@
         <li><strong>Download Options:</strong> The processed output can be downloaded in various formats, including pdf, docx, json, or txt.</li>
     </ul>
 
-    <h2>How it works</h2>
+    <h2 id="how-it-works">How it works</h2>
     <ol>
         <li><strong>Upload a File:</strong>
             <ul>
@@ -55,11 +55,12 @@
             </ul>
         </li>
     </ol>
-    <h2>Endpoints</h2>
+    <h2 id="endpoints">Endpoints</h2>
     <ul>
         <li><strong>Home Page:</strong> <a href="http://127.0.0.1:5000" target="_blank">http://127.0.0.1:5000</a></li>
         <li><strong>Upload Page:</strong> <a href="http://127.0.0.1:5000/upload" target="_blank">http://127.0.0.1:5000/upload</a></li>
         <li><strong>Status Page:</strong> <a href="http://127.0.0.1:5000/status/&lt;uid&gt;" target="_blank">http://127.0.0.1:5000/status/&lt;uid&gt;</a></li>
         <li><strong>Search Page:</strong> <a href="http://127.0.0.1:5000/search" target="_blank">http://127.0.0.1:5000/search</a></li>
     </ul>
+    </div>
 {% endblock %}

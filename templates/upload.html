@@ -1,29 +1,28 @@
 {% extends "base.html" %}
 {% block title %}Upload new File{% endblock %}
-
 {% block content %}
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                    {{message}}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
     <form method="post" enctype="multipart/form-data">
         <fieldset>
             <legend>Upload pptx or pdf file</legend>
-            <input type="file" name="file" accept=".pptx, .pdf">
-            <input type="email" name="email" placeholder="Enter email" value="{{email if email}}">
             <br/>
-            <br/>
-            <label for="prompt">Enter prompt (optional):</label>
-            <input type="text" class="expanding-input" name="prompt" id="prompt" placeholder="e.g: Rewrite the following page in a better way:">
-            <br/>
-            <br/>
-            <input type="submit" value="Upload">
+            <div style="text-align: left;" >
+            <span>
+                <input type="file" name="file" id="file" accept=".pptx, .pdf" onchange="onFileSelected()">
+                <label for="file"><i class="fa-solid fa-file-arrow-up"></i><strong>&nbsp; Select a file...</strong></label>
+                <span id="file-name"> Not selected</span>
+            </span>
+            <br/><br/>
+
+            <label for="email">Email (optional): </label>
+            <input type="email" name="email" id="email" placeholder="Enter email" value="{{email if email}}">
+            <br/><br/>
+
+            <label for="prompt">Enter prompt (optional): </label>
+             <input name="prompt" id="prompt" class="expanding_input" oninput="inputSize(this)"
+                    placeholder="e.g: Rewrite the following page in a better way:" >
+            <br/><br/>
+            </div>
+            <button type="submit">Upload</button>
         </fieldset>
     </form>
 {% endblock %}
