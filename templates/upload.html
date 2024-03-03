@@ -5,6 +5,7 @@
         <fieldset>
             <legend>Upload pptx or pdf file</legend>
             <br/>
+            <div style="text-align: left;" >
             <span>
                 <input type="file" name="file" id="file" accept=".pptx, .pdf" onchange="onFileSelected()">
                 <label for="file"><i class="fa-solid fa-file-arrow-up"></i><strong>&nbsp; Select a file...</strong></label>
@@ -20,6 +21,7 @@
              <input name="prompt" id="prompt" class="expanding_input" oninput="inputSize(this)"
                     placeholder="e.g: Rewrite the following page in a better way:" >
             <br/><br/>
+            </div>
             <button type="submit">Upload</button>
         </fieldset>
     </form>
