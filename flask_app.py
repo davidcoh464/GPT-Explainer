@@ -82,7 +82,7 @@ def upload():
             return redirect(request.url)
         file = request.files.get('file')
         if file.filename == '':
-            flash('No selected file')
+            flash('No file selected')
             return redirect(request.url)
         email = request.form.get('email')
         prompt = request.form.get('prompt', '')
@@ -174,7 +174,7 @@ def search():
                 else:
                     flash(f"Email: {email} does not exist")
         else:
-            flash("Please enter a UID, or provide both email and filename")
+            flash("Please enter a UID, or provide both email and file name")
         return redirect(request.url)
     return render_template("search.html")
 
