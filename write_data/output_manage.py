@@ -28,8 +28,11 @@ class OutputManage:
         Returns:
             list[str]: The flattened list.
         """
-        if len(responses) > 0 and responses[0].get("choices"):
-            return [response["choices"][0]["message"]["content"] for response in responses]
+        if len(responses) > 0 and (responses[0].get("choices") or responses[0].get("error")):
+            return [str(response.get("error")) if response.get("error")
+                    else response["choices"][0]["message"]["content"]
+                    if isinstance(response["choices"], list)
+                    else response["choices"]["message"]["content"] for response in responses]
         return [response.get("content") for response in responses]
 
     @staticmethod
