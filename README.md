@@ -29,17 +29,19 @@ Behind the scenes, an explanation system utilizes ChatGPT API to analyze each sl
    - Select a pptx or pdf file.
    - Optionally provide a prompt and email.
    - Upon submission, a unique UID is generated.
+    ![alt text](https://raw.githubusercontent.com/davidcoh464/GPT-Explainer/main/app%20images/upload%20page%20.png)
 
 2. **Background Processing:**
    - The application utilizes asyncio to asynchronously send each slide/page to the ChatGPT API for analysis.
 
 3. **Search and Retrieve:**
    - Users can search for the output file by the unique uid for the file or by the file name + email (if provided).
+   ![alt text](https://raw.githubusercontent.com/davidcoh464/GPT-Explainer/main/app%20images/serach%20page.png)
 
 4. **View and Download:**
    - Once the file output is ready, users can view a comprehensive HTML table representation on the status page.
    - Download the processed output in pdf, docx, json, or txt format.
-
+   ![alt text](https://raw.githubusercontent.com/davidcoh464/GPT-Explainer/main/app%20images/explainer%20status%20page.png)
 
 
 ## Installation
